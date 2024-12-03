@@ -21,6 +21,7 @@ defmodule PhoenixPlaygroundWeb.Router do
     live "/light", LightLive
     live "/license", LicenseLive
     live "/sales-dashbord", SalesDashbordLive
+    live "/search", SearchLive
   end
 
   # Other scopes may use custom stacks.
