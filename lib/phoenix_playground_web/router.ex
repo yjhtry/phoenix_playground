@@ -23,6 +23,7 @@ defmodule PhoenixPlaygroundWeb.Router do
     live "/sales-dashbord", SalesDashbordLive
     live "/search", SearchLive
     live "/autocomplete", AutocompleteLive
+    live "/filter", FilterLive
   end
 
   # Other scopes may use custom stacks.
