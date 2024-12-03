@@ -19,6 +19,7 @@ defmodule PhoenixPlaygroundWeb.Router do
 
     get "/", PageController, :home
     live "/light", LightLive
+    live "/license", LicenseLive
   end
 
   # Other scopes may use custom stacks.
