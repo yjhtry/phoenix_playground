@@ -1,0 +1,94 @@
+<h1>Food Bank Donations</h1>
+<div id="donations">
+  <form phx-change="select-per-page">
+    Show
+    <select class="w-24" name="per_page">
+      <%= options_for_select([5, 10, 15, 20], @options.per_page) %>
+    </select>
+    <label for="per-page">per page</label>
+  </form>
+  <div class="wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th class="item">
+            <.link patch={
+              link_path(
+                Map.merge(@options, %{
+                  sort_by: "item",
+                  sort_order: toggle_sort_order(@options.sort_order)
+                })
+              )
+            }>
+              Item
+            </.link>
+          </th>
+          <th>
+            <.link patch={
+              link_path(
+                Map.merge(@options, %{
+                  sort_by: "quantity",
+                  sort_order: toggle_sort_order(@options.sort_order)
+                })
+              )
+            }>
+              Quantity
+            </.link>
+          </th>
+          <th>
+            <.link patch={
+              link_path(
+                Map.merge(@options, %{
+                  sort_by: "days_until_expires",
+                  sort_order: toggle_sort_order(@options.sort_order)
+                })
+              )
+            }>
+              Days Until Expires
+            </.link>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for donation <- @donations do %>
+          <tr>
+            <td class="item">
+              <span class="id"><%= donation.id %></span>
+              <%= donation.emoji %> <%= donation.item %>
+            </td>
+            <td>
+              <%= donation.quantity %> lbs
+            </td>
+            <td>
+              <span class={expires_class(donation)}>
+                <%= donation.days_until_expires %>
+              </span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="footer">
+      <div class="pagination">
+        <.link
+          :if={@options.page > 1}
+          patch={link_path(Map.put(@options, :page, @options.page - 1))}
+          class="previous"
+        >
+          Previous
+        </.link>
+        <%= for i <- (@options.page - 2)..(@options.page + 2), i > 0 do %>
+          <.link
+            patch={link_path(Map.put(@options, :page, i))}
+            class={if i == @options.page, do: "active"}
+          >
+            <%= i %>
+          </.link>
+        <% end %>
+        <.link patch={link_path(Map.put(@options, :page, @options.page + 1))} class="next">
+          Next
+        </.link>
+      </div>
+    </div>
+  </div>
+</div>

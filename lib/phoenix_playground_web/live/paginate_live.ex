@@ -5,17 +5,10 @@ defmodule PhoenixPlaygroundWeb.PaginateLive do
   use PhoenixPlaygroundWeb, :live_view
 
   def mount(_params, _session, socket) do
-    socket =
-      assign(
-        socket,
-        options: Enum.into(get_default_options(), %{})
-      )
-
     {:ok, socket, temporary_assigns: [donations: []]}
   end
 
   def handle_params(%{"page" => page, "per_page" => per_page}, _uri, socket) do
-    IO.inspect(Routes)
     page = String.to_integer(page)
     per_page = String.to_integer(per_page)
 
@@ -56,5 +49,5 @@ defmodule PhoenixPlaygroundWeb.PaginateLive do
     if Donations.almost_expired?(donation), do: "eat-now", else: "fresh"
   end
 
-  defp get_default_options(), do: [page: 1, per_page: 10]
+  defp get_default_options(), do: [page: 1, per_page: 5]
 end

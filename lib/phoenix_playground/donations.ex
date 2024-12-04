@@ -30,6 +30,9 @@ defmodule PhoenixPlayground.Donations do
         from q in query,
           offset: ^((page - 1) * per_page),
           limit: ^per_page
+
+      {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
+        from q in query, order_by: [{^sort_order, ^sort_by}]
     end)
     |> Repo.all()
   end

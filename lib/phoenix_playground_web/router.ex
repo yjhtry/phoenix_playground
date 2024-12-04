@@ -26,6 +26,7 @@ defmodule PhoenixPlaygroundWeb.Router do
     live "/filter", FilterLive
     live "/servers", ServersLive
     live "/paginate", PaginateLive
+    live "/sort", SortLive
   end
 
   # Other scopes may use custom stacks.
