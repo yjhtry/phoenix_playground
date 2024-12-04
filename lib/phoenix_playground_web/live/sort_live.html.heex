@@ -11,42 +11,27 @@
     <table>
       <thead>
         <tr>
-          <th class="item">
-            <.link patch={
-              link_path(
-                Map.merge(@options, %{
-                  sort_by: "item",
-                  sort_order: toggle_sort_order(@options.sort_order)
-                })
-              )
-            }>
-              Item
-            </.link>
-          </th>
-          <th>
-            <.link patch={
-              link_path(
-                Map.merge(@options, %{
-                  sort_by: "quantity",
-                  sort_order: toggle_sort_order(@options.sort_order)
-                })
-              )
-            }>
-              Quantity
-            </.link>
-          </th>
-          <th>
-            <.link patch={
-              link_path(
-                Map.merge(@options, %{
-                  sort_by: "days_until_expires",
-                  sort_order: toggle_sort_order(@options.sort_order)
-                })
-              )
-            }>
-              Days Until Expires
-            </.link>
-          </th>
+          <%= for {title, by} <- [{"Item", :item}, {"Quantity", :quantity}, {"Days Until Expires", :days_until_expires}] do %>
+            <th class="item min-w-[320px] h-20">
+              <.link
+                class="flex items-center"
+                patch={
+                  link_path(
+                    Map.merge(@options, %{
+                      sort_by: by,
+                      sort_order: toggle_sort_order(@options.sort_order)
+                    })
+                  )
+                }
+              >
+                <span><%= title %></span>
+                <span :if={@options.sort_by == by}>
+                  <img :if={@options.sort_order == :desc} src={~p"/images/up.svg"} width="36" />
+                  <img :if={@options.sort_order == :asc} src={~p"/images/down.svg"} width="36" />
+                </span>
+              </.link>
+            </th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
