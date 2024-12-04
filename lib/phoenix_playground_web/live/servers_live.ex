@@ -41,7 +41,7 @@ defmodule PhoenixPlaygroundWeb.ServersLive do
           <%= for server <- @servers do %>
             <div>
               <.link
-                patch={~p"/servers/?id=#{server.id}"}
+                patch={~p"/servers/?#{[id: server.id]}"}
                 class={if server == @selected_server, do: "active"}
               >
                 <%= link_body(server) %>
