@@ -3,7 +3,13 @@ defmodule PhoenixPlaygroundWeb.ServersLive do
   use PhoenixPlaygroundWeb, :live_view
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, servers: Servers.list_servers())
+    servers = Servers.list_servers()
+
+    socket =
+      assign(socket,
+        selected_server: hd(servers),
+        servers: servers
+      )
 
     {:ok, socket}
   end
@@ -19,6 +25,10 @@ defmodule PhoenixPlaygroundWeb.ServersLive do
         page_title: "What's up #{server.name}?"
       )
 
+    {:noreply, socket}
+  end
+
+  def handle_params(_, _url, socket) do
     {:noreply, socket}
   end
 
