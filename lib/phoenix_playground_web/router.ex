@@ -28,6 +28,7 @@ defmodule PhoenixPlaygroundWeb.Router do
     live "/paginate", PaginateLive
     live "/sort", SortLive
     live "/volunteers", VolunteersLive
+    live "/infinite", InfiniteScrollLive
   end
 
   # Other scopes may use custom stacks.
