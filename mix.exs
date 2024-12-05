@@ -59,7 +59,8 @@ defmodule PhoenixPlayground.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
-      {:number, "~> 1.0"}
+      {:number, "~> 1.0"},
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false}
     ]
   end
 

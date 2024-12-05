@@ -1,0 +1,33 @@
+<h1>Volunteer Check-In</h1>
+<div id="checkin">
+  <.form :let={form} for={@changeset} phx-submit="save" phx-change="validate">
+    <div class="field">
+      <.input field={form[:name]} placeholder="Name" autocomplete="off" phx-debounce="2000" />
+    </div>
+    <div class="field">
+      <.input field={form[:phone]} placeholder="Phone" autocomplete="off" phx-debounce="blur" />
+    </div>
+    <.button type="submit" phx-disable-with="Saving...">Save</.button>
+  </.form>
+
+  <div id="volunteers" phx-update="stream">
+    <div
+      :for={volunteer <- @volunteers}
+      class={"volunteer #{if volunteer.checked_out, do: "out"}"}
+      id={"volunteer-#{volunteer.id}"}
+    >
+      <div class="name">
+        <%= volunteer.name %>
+      </div>
+      <div class="phone">
+        <img src={~p"/images/phone.svg"} />
+        <%= volunteer.phone %>
+      </div>
+      <div class="status">
+        <button phx-click="toggle-status" phx-value-id={volunteer.id} phx-disable-with="Saving...">
+          <%= if volunteer.checked_out, do: "Check In", else: "Check Out" %>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
