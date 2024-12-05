@@ -4,6 +4,8 @@ defmodule PhoenixPlaygroundWeb.VolunteersLive do
   use PhoenixPlaygroundWeb, :live_view
 
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Volunteers.subscribe()
+
     socket =
       assign(socket,
         changeset: Volunteers.change_volunteer(%Volunteer{}),
@@ -22,8 +24,11 @@ defmodule PhoenixPlaygroundWeb.VolunteersLive do
 
   def handle_event("save", %{"volunteer" => params}, socket) do
     case Volunteers.create_volunteer(params) do
-      {:ok, %Volunteer{} = volunteer} ->
-        socket = update(socket, :volunteers, fn volunteers -> [volunteer | volunteers] end)
+      {:ok, %Volunteer{} = _volunteer} ->
+        changeset = Volunteers.change_volunteer(%Volunteer{})
+
+        socket = assign(socket, changeset: changeset)
+
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -33,12 +38,20 @@ defmodule PhoenixPlaygroundWeb.VolunteersLive do
   end
 
   def handle_event("toggle-status", %{"id" => id}, socket) do
-    id = String.to_integer(id)
     volunteer = Volunteers.get_volunteer!(id)
 
     {:ok, _volunteer} =
       Volunteers.update_volunteer(volunteer, %{checked_out: !volunteer.checked_out})
 
+    {:noreply, socket}
+  end
+
+  def handle_info({:volunteer_created, volunteer}, socket) do
+    socket = update(socket, :volunteers, fn volunteers -> [volunteer | volunteers] end)
+    {:noreply, socket}
+  end
+
+  def handle_info({:volunteer_updated, _volunteer}, socket) do
     volunteers = Volunteers.list_volunteers()
     socket = assign(socket, volunteers: volunteers)
 
